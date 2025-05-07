@@ -3,7 +3,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
-import { buildConfig, PayloadRequest } from 'payload'
+import { buildConfig, GlobalConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
@@ -16,6 +16,12 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import Hero from './globals/hero'
+import { Services } from './collections/Services'
+import { SkillSets } from './collections/Skill-Sets'
+import { Portfolio } from './collections/Portfolio'
+import { Insights } from './collections/Insights'
+import HeroSlider from './globals/hero-slider'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -62,9 +68,14 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Services, SkillSets, Portfolio, Insights, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [
+    Header as GlobalConfig,
+    Footer as GlobalConfig,
+    Hero as GlobalConfig,
+    HeroSlider as GlobalConfig,
+  ],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

@@ -1,10 +1,8 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
-
+import type { ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import RichText from '@/components/RichText'
-
 import { CollectionArchive } from '@/components/CollectionArchive'
 
 export const ArchiveBlock: React.FC<
@@ -12,25 +10,31 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const {
+    id,
+    categories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    relationTo = 'posts',
+  } = props
 
   const limit = limitFromProps || 3
+  let docs: any[] = []
 
-  let posts: Post[] = []
+  const payload = await getPayload({ config: configPromise })
 
   if (populateBy === 'collection') {
-    const payload = await getPayload({ config: configPromise })
+    const flattenedCategories = categories?.map((category) =>
+      typeof category === 'object' ? category.id : category,
+    )
 
-    const flattenedCategories = categories?.map((category) => {
-      if (typeof category === 'object') return category.id
-      else return category
-    })
-
-    const fetchedPosts = await payload.find({
-      collection: 'posts',
+    const fetched = await payload.find({
+      collection: relationTo,
       depth: 1,
       limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
+      ...(flattenedCategories?.length
         ? {
             where: {
               categories: {
@@ -41,25 +45,27 @@ export const ArchiveBlock: React.FC<
         : {}),
     })
 
-    posts = fetchedPosts.docs
-  } else {
-    if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value
-      }) as Post[]
-
-      posts = filteredSelectedPosts
-    }
+    docs = fetched.docs
+  } else if (populateBy === 'selection' && selectedDocs?.length) {
+    docs = await Promise.all(
+      selectedDocs.map(async (docRef) => {
+        const { relationTo, value } = docRef
+        if (typeof value === 'object') return value
+        return await payload.findByID({ collection: relationTo, id: value })
+      }),
+    )
   }
 
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <div className="my-4" id={`block-${id}`}>
       {introContent && (
         <div className="container mb-16">
           <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+
+      {/* ✅ Pass relationTo here */}
+      <CollectionArchive posts={docs} relationTo={relationTo} />
     </div>
   )
 }

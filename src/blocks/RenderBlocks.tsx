@@ -18,34 +18,54 @@ const blockComponents = {
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
-}> = (props) => {
-  const { blocks } = props
-
+}> = ({ blocks }) => {
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
-  if (hasBlocks) {
-    return (
-      <Fragment>
-        {blocks.map((block, index) => {
-          const { blockType } = block
+  if (!hasBlocks) return null
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+  const renderedBlocks = []
+  let mediaGroup: Page['layout'][0][] = []
 
-            if (Block) {
+  const flushMediaGroup = () => {
+    if (mediaGroup.length > 0) {
+      renderedBlocks.push(
+        <div key={`media-group-${renderedBlocks.length}`} className="container mx-auto my-4">
+          <div className="flex flex-wrap justify-center">
+            {mediaGroup.map((block, i) => {
+              const Block = blockComponents['mediaBlock']
+
               return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                <div key={`media-${i}`} className="w-1/2 md:w-1/4 xl:w-1/6 mb-8 px-2">
                   <Block {...block} disableInnerContainer />
                 </div>
               )
-            }
-          }
-          return null
-        })}
-      </Fragment>
-    )
+            })}
+          </div>
+        </div>,
+      )
+      mediaGroup = []
+    }
   }
 
-  return null
+  blocks.forEach((block, index) => {
+    const { blockType } = block
+
+    if (blockType === 'mediaBlock') {
+      mediaGroup.push(block)
+    } else {
+      flushMediaGroup()
+      const Block = blockComponents[blockType]
+      if (Block) {
+        renderedBlocks.push(
+          <div key={`block-${index}`} className="my-4 container">
+            <Block {...block} disableInnerContainer />
+          </div>,
+        )
+      }
+    }
+  })
+
+  flushMediaGroup() // Flush any remaining media blocks
+
+  return <Fragment>{renderedBlocks}</Fragment>
 }

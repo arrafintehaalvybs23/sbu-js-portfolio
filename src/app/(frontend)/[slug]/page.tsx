@@ -12,6 +12,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import HeroSlider from '@/components/HeroSlider'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -48,11 +49,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'home' } = await paramsPromise
   const url = '/' + slug
 
-  let page: RequiredDataFromCollectionSlug<'pages'> | null
+  const payload = await getPayload({ config: configPromise })
 
-  page = await queryPageBySlug({
-    slug,
-  })
+  let page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({ slug })
 
   // Remove this code once your website is seeded
   if (!page && slug === 'home') {
@@ -65,15 +64,32 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
-  return (
-    <article className="pt-16 pb-24">
-      <PageClient />
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+  // ✅ Fetch hero-slider global
+  const heroSliderData = await payload.findGlobal({
+    slug: 'hero-slider',
+    draft,
+  })
 
+  const slides = heroSliderData?.slides?.map((slide: any) => ({
+    title: slide.title,
+    motto: slide.motto,
+    ctaText: slide.ctaText,
+    ctaLink: slide.ctaLink,
+    image: {
+      url: slide.image?.url || '', // fallback if image is missing
+    },
+  }))
+
+  return (
+    <article className="pt-2 pb-24">
+      <PageClient />
+      <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
+      {/* ✅ Render HeroSlider only if there are slides */}
+
       <RenderHero {...hero} />
+      {slug === 'home' && slides?.length > 0 && <HeroSlider slides={slides} />}
       <RenderBlocks blocks={layout} />
     </article>
   )

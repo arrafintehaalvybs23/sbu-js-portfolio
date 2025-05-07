@@ -1,65 +1,47 @@
 import type { StaticImageData } from 'next/image'
+import React from 'react'
 
 import { cn } from '@/utilities/ui'
-import React from 'react'
 import RichText from '@/components/RichText'
+import { Media } from '@/components/Media'
 
 import type { MediaBlock as MediaBlockProps } from '@/payload-types'
 
-import { Media } from '../../components/Media'
-
 type Props = MediaBlockProps & {
-  breakout?: boolean
-  captionClassName?: string
-  className?: string
-  enableGutter?: boolean
-  imgClassName?: string
   staticImage?: StaticImageData
-  disableInnerContainer?: boolean
+  className?: string
 }
 
-export const MediaBlock: React.FC<Props> = (props) => {
-  const {
-    captionClassName,
-    className,
-    enableGutter = true,
-    imgClassName,
-    media,
-    staticImage,
-    disableInnerContainer,
-  } = props
-
-  let caption
-  if (media && typeof media === 'object') caption = media.caption
+export const MediaBlock: React.FC<Props> = ({
+  media,
+  caption,
+  size = 'full',
+  staticImage,
+  className,
+  enableGutter,
+}) => {
+  const sizeClasses: Record<string, string> = {
+    oneThird: 'w-full md:w-1/3',
+    half: 'w-full md:w-1/2',
+    twoThirds: 'w-full md:w-2/3',
+    full: 'w-full',
+  }
 
   return (
     <div
       className={cn(
-        '',
+        'container',
         {
           container: enableGutter,
         },
         className,
       )}
     >
-      {(media || staticImage) && (
-        <Media
-          imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-          resource={media}
-          src={staticImage}
-        />
-      )}
+      {media && <Media resource={media} src={staticImage} imgClassName="w-2/3" />}
+
       {caption && (
-        <div
-          className={cn(
-            'mt-6',
-            {
-              container: !disableInnerContainer,
-            },
-            captionClassName,
-          )}
-        >
-          <RichText data={caption} enableGutter={false} />
+        <div className="mt-2">
+          <p>{caption}</p>
         </div>
       )}
     </div>

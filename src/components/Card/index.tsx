@@ -14,14 +14,15 @@ export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
   doc?: CardPostData
-  relationTo?: 'posts'
+  relationTo?: 'posts' | 'skill-sets' | 'projects' | 'services' | 'portfolio'
   showCategories?: boolean
   title?: string
 }> = (props) => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-  const { slug, categories, meta, title } = doc || {}
+  const { slug, categories, meta, title, heroImage, content } = doc || {}
+
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
@@ -37,9 +38,9 @@ export const Card: React.FC<{
       )}
       ref={card.ref}
     >
-      <div className="relative w-full ">
-        {!metaImage && <div className="">No image</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+      <div className="relative w-full items-center justify-center flex">
+        {!heroImage && <div className="">No image</div>}
+        {heroImage && typeof heroImage !== 'string' && <Media resource={heroImage} size="33vw" />}
       </div>
       <div className="p-4">
         {showCategories && hasCategories && (
@@ -70,14 +71,14 @@ export const Card: React.FC<{
         )}
         {titleToUse && (
           <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
-                {titleToUse}
-              </Link>
-            </h3>
+            <Link className="not-prose" href={href} ref={link.ref}>
+              <h3 className="font-semibold text-lg">{titleToUse}</h3>
+            </Link>
+            <p>{content && content?.root?.children?.[0]?.children?.[0]?.text}</p>
           </div>
         )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
+
+        {/* {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>} */}
       </div>
     </article>
   )

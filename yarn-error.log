@@ -1,0 +1,105 @@
+Arguments: 
+  /Users/bs902/.nvm/versions/node/v20.16.0/bin/node /Users/bs902/.yarn/bin/yarn.js add swiper
+
+PATH: 
+  /Users/bs902/.nvm/versions/node/v20.16.0/bin:/Users/bs902/.nvm/versions/node/v18.18.0/bin:/Users/bs902/.bun/bin/bun:/Users/bs902/Library/pnpm:/Users/bs902/development/flutter/bin:/opt/homebrew/opt/python@3.8/bin:/Users/bs902/.yarn/bin:/Users/bs902/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/bs902/.nvm/versions/node/v18.18.0/bin:/Users/bs902/.bun/bin/bun:/Users/bs902/Library/pnpm:/Users/bs902/development/flutter/bin:/opt/homebrew/opt/python@3.8/bin:/Users/bs902/.yarn/bin:/Users/bs902/.config/yarn/global/node_modules/.bin:/Users/bs902/.local/bin:/Users/bs902/Library/Android/sdk/platform-tools/:/Users/bs902/Library/Android/sdk/tools:/Users/bs902/Library/Android/sdk/tools/bin:/Users/bs902/Library/Android/sdk/platform-tools:/Users/bs902/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/bs902/.local/bin:/Users/bs902/Library/Android/sdk/platform-tools/:/Users/bs902/Library/Android/sdk/tools:/Users/bs902/Library/Android/sdk/tools/bin:/Users/bs902/Library/Android/sdk/platform-tools:/Users/bs902/.local/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.16.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/Users/bs902/Library/Caches/Yarn/v6/npm-glob-parent-6.0.2-6d237d99083950c79290f24c7642a3de9a28f9e3-integrity/node_modules/glob-parent/LICENSE' -> '/Users/bs902/Desktop/sbu-js-portfolio/node_modules/eslint/node_modules/glob-parent/LICENSE'
+
+npm manifest: 
+  {
+    "name": "sbu-js-admin",
+    "version": "1.0.0",
+    "description": "Website template for Payload",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+      "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+      "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+      "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+      "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
+      "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+      "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+      "ii": "cross-env NODE_OPTIONS=--no-deprecation pnpm --ignore-workspace install",
+      "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+      "lint:fix": "cross-env NODE_OPTIONS=--no-deprecation next lint --fix",
+      "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+      "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
+      "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
+    },
+    "dependencies": {
+      "@payloadcms/admin-bar": "3.33.0",
+      "@payloadcms/db-mongodb": "3.33.0",
+      "@payloadcms/live-preview-react": "3.33.0",
+      "@payloadcms/next": "3.33.0",
+      "@payloadcms/payload-cloud": "3.33.0",
+      "@payloadcms/plugin-form-builder": "3.33.0",
+      "@payloadcms/plugin-nested-docs": "3.33.0",
+      "@payloadcms/plugin-redirects": "3.33.0",
+      "@payloadcms/plugin-search": "3.33.0",
+      "@payloadcms/plugin-seo": "3.33.0",
+      "@payloadcms/richtext-lexical": "3.33.0",
+      "@payloadcms/ui": "3.33.0",
+      "@radix-ui/react-checkbox": "^1.0.4",
+      "@radix-ui/react-label": "^2.0.2",
+      "@radix-ui/react-select": "^2.0.0",
+      "@radix-ui/react-slot": "^1.0.2",
+      "class-variance-authority": "^0.7.0",
+      "clsx": "^2.1.1",
+      "cross-env": "^7.0.3",
+      "geist": "^1.3.0",
+      "graphql": "^16.8.2",
+      "lucide-react": "^0.378.0",
+      "next": "15.3.0",
+      "next-sitemap": "^4.2.3",
+      "payload": "3.33.0",
+      "prism-react-renderer": "^2.3.1",
+      "react": "19.1.0",
+      "react-dom": "19.1.0",
+      "react-hook-form": "7.45.4",
+      "sharp": "0.32.6",
+      "tailwind-merge": "^2.3.0",
+      "tailwindcss-animate": "^1.0.7"
+    },
+    "devDependencies": {
+      "@eslint/eslintrc": "^3.2.0",
+      "@tailwindcss/typography": "^0.5.13",
+      "@types/escape-html": "^1.0.2",
+      "@types/node": "22.5.4",
+      "@types/react": "19.1.0",
+      "@types/react-dom": "19.1.2",
+      "autoprefixer": "^10.4.19",
+      "copyfiles": "^2.4.1",
+      "eslint": "^9.16.0",
+      "eslint-config-next": "15.3.0",
+      "postcss": "^8.4.38",
+      "prettier": "^3.4.2",
+      "tailwindcss": "^3.4.3",
+      "typescript": "5.7.3"
+    },
+    "engines": {
+      "node": "^18.20.2 || >=20.9.0",
+      "pnpm": "^9 || ^10"
+    },
+    "pnpm": {
+      "onlyBuiltDependencies": [
+        "sharp"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

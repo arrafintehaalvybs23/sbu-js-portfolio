@@ -30,10 +30,10 @@ const config = {
     container: {
       center: true,
       padding: {
-        '2xl': '2rem',
-        DEFAULT: '1rem',
-        lg: '2rem',
-        md: '2rem',
+        '2xl': '0rem',
+        DEFAULT: '0.25rem',
+        lg: '0rem',
+        md: '0rem',
         sm: '1rem',
         xl: '2rem',
       },
