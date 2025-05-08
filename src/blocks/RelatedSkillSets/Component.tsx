@@ -16,7 +16,6 @@ export type RelatedSkillSetsProps = {
 
 export const RelatedSkillSets: React.FC<RelatedSkillSetsProps> = (props) => {
   const { className, docs, introContent, relationTo } = props
-  console.log('🚀 ~ docs:', docs)
 
   return (
     <div className={clsx('lg:container', className)}>
@@ -30,9 +29,10 @@ export const RelatedSkillSets: React.FC<RelatedSkillSetsProps> = (props) => {
             <Card
               key={index}
               doc={doc}
-              relationTo={relationTo}
+              relationTo={'skill-sets'}
               showCategories
               title={doc?.['skill-set']?.title}
+              parentSlug={doc?.['skill-set']?.slug}
             />
           )
         })}

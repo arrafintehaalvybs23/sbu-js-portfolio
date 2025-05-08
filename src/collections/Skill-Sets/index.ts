@@ -104,7 +104,6 @@ export const SkillSets: CollectionConfig = {
         },
         {
           fields: [
-            // Replace this block with the updated version below
             {
               name: 'related-skill-sets',
               type: 'array',

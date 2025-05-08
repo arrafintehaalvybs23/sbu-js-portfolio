@@ -17,9 +17,10 @@ export const Card: React.FC<{
   relationTo?: 'posts' | 'skill-sets' | 'projects' | 'services' | 'portfolio'
   showCategories?: boolean
   title?: string
+  parentSlug?: string
 }> = (props) => {
   const { card, link } = useClickableCard({})
-  const { className, doc, relationTo, showCategories, title: titleFromProps } = props
+  const { className, doc, relationTo, showCategories, title: titleFromProps, parentSlug } = props
 
   const { slug, categories, meta, title, heroImage, content } = doc || {}
 
@@ -28,7 +29,7 @@ export const Card: React.FC<{
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+  const href = `/${relationTo}/${parentSlug || slug}`
 
   return (
     <article
