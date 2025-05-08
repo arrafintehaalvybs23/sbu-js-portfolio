@@ -40,7 +40,9 @@ export const Card: React.FC<{
     >
       <div className="relative w-full items-center justify-center flex">
         {!heroImage && <div className="">No image</div>}
-        {heroImage && typeof heroImage !== 'string' && <Media resource={heroImage} size="33vw" />}
+        {heroImage && typeof heroImage !== 'string' && (
+          <Media resource={heroImage} imgClassName="w-full h-[300px]" />
+        )}
       </div>
       <div className="p-4">
         {showCategories && hasCategories && (

@@ -30,12 +30,12 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides }) => {
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000 }}
         loop
-        className="w-full h-full"
+        className="w-full h-full custom-swiper"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div
-              className="w-full h-full bg-no-repeat bg-center lg:bg-right flex items-center text-white text-center px-6"
+              className="w-full h-full bg-no-repeat bg-center lg:bg-right flex items-center text-white text-center"
               style={{ backgroundImage: `url(${slide.image.url})` }}
             >
               <div className="p-6 rounded w-full h-full lg:w-1/2 text-center flex-col flex justify-center items-center bg-blue-950 bg-opacity-50 lg:bg-opacity-100">

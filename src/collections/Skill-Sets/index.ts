@@ -104,22 +104,32 @@ export const SkillSets: CollectionConfig = {
         },
         {
           fields: [
+            // Replace this block with the updated version below
             {
-              name: 'relatedServices',
-              type: 'relationship',
+              name: 'related-skill-sets',
+              type: 'array',
               admin: {
                 position: 'sidebar',
               },
-              filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id],
-                  },
-                }
-              },
-              hasMany: true,
-              relationTo: 'skill-sets',
+              fields: [
+                {
+                  name: 'skill-set',
+                  type: 'relationship',
+                  relationTo: 'skill-sets',
+                  required: true,
+                  filterOptions: ({ id }) => ({
+                    id: { not_in: [id] },
+                  }),
+                },
+                {
+                  name: 'heroImage',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: false,
+                },
+              ],
             },
+            // your existing categories field
             {
               name: 'categories',
               type: 'relationship',

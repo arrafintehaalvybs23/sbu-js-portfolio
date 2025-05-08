@@ -3,26 +3,26 @@ import React from 'react'
 import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { formatAuthors } from '@/utilities/formatAuthors'
+import RichText from '@/components/RichText'
 
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors } = post
-  console.log('🚀 ~ heroImage:', heroImage)
-
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
+  const { categories, heroImage } = post
 
   return (
     <div className="container py-5 px-2 sm:py-2 text-white bg-blue-950">
       <div className="w-full h-full flex items-center justify-center flex-col sm:flex-row gap-20">
         {heroImage && typeof heroImage !== 'string' && (
           <React.Fragment>
-            <Media priority imgClassName="" resource={heroImage} />
-            <h1 className="font-bold text-2xl max-w-[32rem]">
-              {heroImage && heroImage?.caption?.root?.children?.[0]?.children?.[0]?.text}
-            </h1>
+            <Media priority imgClassName="w-full h-[300px]" resource={heroImage} />
+            {heroImage && (
+              <RichText
+                className="max-w-[32rem] mx-10 font-bold text-2xl"
+                data={heroImage?.caption}
+                enableGutter={false}
+              />
+            )}
           </React.Fragment>
         )}
       </div>

@@ -21,7 +21,7 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 240 5% 96%;
+    --card: 210 100% 98%;
     --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
@@ -57,7 +57,7 @@
     --background: 0 0% 0%;
     --foreground: 210 40% 98%;
 
-    --card: 0 0% 4%;
+    --card: 222 30% 10%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222.2 84% 4.9%;
@@ -104,4 +104,24 @@ html {
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
+}
+
+/* Customize pagination bullets */
+.custom-swiper .swiper-pagination-bullet {
+  background-color: #aaa; /* Inactive */
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background-color: #aa0; /* Active */
+}
+
+/* Customize navigation arrows */
+.custom-swiper .swiper-button-prev,
+.custom-swiper .swiper-button-next {
+  color: #ffffff; /* Arrow color */
+}
+
+.custom-swiper .swiper-button-prev::after,
+.custom-swiper .swiper-button-next::after {
+  font-size: 1.5rem; /* Arrow size */
 }
