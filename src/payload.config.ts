@@ -22,6 +22,7 @@ import { SkillSets } from './collections/Skill-Sets'
 import { Portfolio } from './collections/Portfolio'
 import { Insights } from './collections/Insights'
 import HeroSlider from './globals/hero-slider'
+import { Products } from './collections/Products'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -68,7 +69,18 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Services, SkillSets, Portfolio, Insights, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Products,
+    Services,
+    SkillSets,
+    Portfolio,
+    Insights,
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [
     Header as GlobalConfig,

@@ -27,17 +27,17 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
 
-export const Posts: CollectionConfig<'posts'> = {
-  slug: 'posts',
+export const Products: CollectionConfig<'products'> = {
+  slug: 'products',
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
     update: authenticated,
   },
-  // This config controls what's populated by default when a post is referenced
+  // This config controls what's populated by default when a product is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
+  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'products'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -53,7 +53,7 @@ export const Posts: CollectionConfig<'posts'> = {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'posts',
+          collection: 'products',
           req,
         })
 
@@ -63,7 +63,7 @@ export const Posts: CollectionConfig<'posts'> = {
     preview: (data, { req }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'posts',
+        collection: 'products',
         req,
       }),
     useAsTitle: 'title',
@@ -109,27 +109,19 @@ export const Posts: CollectionConfig<'posts'> = {
           fields: [
             {
               name: 'relatedPosts',
-              type: 'array',
+              type: 'relationship',
               admin: {
                 position: 'sidebar',
               },
-              fields: [
-                {
-                  name: 'post',
-                  type: 'relationship',
-                  relationTo: 'posts',
-                  required: true,
-                  filterOptions: ({ id }) => ({
-                    id: { not_in: [id] },
-                  }),
-                },
-                {
-                  name: 'heroImage',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: false,
-                },
-              ],
+              filterOptions: ({ id }) => {
+                return {
+                  id: {
+                    not_in: [id],
+                  },
+                }
+              },
+              hasMany: true,
+              relationTo: 'products',
             },
             {
               name: 'categories',

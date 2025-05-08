@@ -29,7 +29,7 @@ export const RenderBlocks: React.FC<{
   const flushMediaGroup = () => {
     if (mediaGroup.length > 0) {
       renderedBlocks.push(
-        <div key={`media-group-${renderedBlocks.length}`} className="container mx-auto my-4">
+        <div key={`media-group-${renderedBlocks.length}`} className="container mx-auto my-10">
           <div className="flex flex-wrap justify-center">
             {mediaGroup.map((block, i) => {
               const Block = blockComponents['mediaBlock']
@@ -57,7 +57,7 @@ export const RenderBlocks: React.FC<{
       const Block = blockComponents[blockType]
       if (Block) {
         renderedBlocks.push(
-          <div key={`block-${index}`} className="my-4 container">
+          <div key={`block-${index}`} className="my-10 container">
             <Block {...block} disableInnerContainer />
           </div>,
         )

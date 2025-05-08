@@ -7,40 +7,54 @@ import type { Props as MediaProps } from '../types'
 
 import { getClientSideURL } from '@/utilities/getURL'
 
-export const VideoMedia: React.FC<MediaProps> = (props) => {
-  const { onClick, resource, videoClassName } = props
-
+export const VideoMedia: React.FC<MediaProps> = ({ onClick, resource, videoClassName }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
-  // const [showFallback] = useState<boolean>()
 
   useEffect(() => {
-    const { current: video } = videoRef
+    const video = videoRef.current
     if (video) {
       video.addEventListener('suspend', () => {
-        // setShowFallback(true);
         // console.warn('Video was suspended, rendering fallback image.')
       })
     }
   }, [])
 
-  if (resource && typeof resource === 'object') {
-    const { filename } = resource
+  if (!resource || typeof resource !== 'object') return null
+
+  // Handle external video (e.g. YouTube)
+  if (resource.isExternal && resource.externalURL) {
+    let embedURL = resource.externalURL
+
+    // Transform YouTube link into embed format
+    if (resource.externalURL.includes('youtube.com') || resource.externalURL.includes('youtu.be')) {
+      const youtubeId = resource.externalURL.includes('youtu.be')
+        ? resource.externalURL.split('youtu.be/')[1]
+        : new URL(resource.externalURL).searchParams.get('v')
+
+      embedURL = `https://www.youtube.com/embed/${youtubeId}`
+    }
 
     return (
-      <video
-        autoPlay
-        className={cn(videoClassName)}
-        controls={false}
-        loop
-        muted
-        onClick={onClick}
-        playsInline
-        ref={videoRef}
-      >
-        <source src={`${getClientSideURL()}/media/${filename}`} />
-      </video>
+      <div className={cn('aspect-video w-full', videoClassName)}>
+        <iframe src={embedURL} title="Embedded Video" allowFullScreen className="w-full h-full" />
+      </div>
     )
   }
 
-  return null
+  // Handle local video file
+  const { filename } = resource
+  return (
+    <video
+      autoPlay={false}
+      className={cn(videoClassName)}
+      controls
+      loop
+      muted
+      onClick={onClick}
+      playsInline
+      ref={videoRef}
+    >
+      <source src={`${getClientSideURL()}/media/${filename}`} />
+    </video>
+  )
 }

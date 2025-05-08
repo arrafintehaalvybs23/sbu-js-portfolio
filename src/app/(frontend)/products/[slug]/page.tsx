@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -7,20 +8,18 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 
-import type { Service } from '@/payload-types'
+import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { Breadcrumbs } from '@/components/BreadCrumb'
-import { RelatedSkillSets } from '@/blocks/RelatedSkillSets/Component'
-import { relatedArticlesContent } from '@/collections/RelatedArticles'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
-  const skillSets = await payload.find({
-    collection: 'skill-sets',
+  const products = await payload.find({
+    collection: 'products',
     draft: false,
     limit: 1000,
     overrideAccess: false,
@@ -30,7 +29,7 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = skillSets.docs.map(({ slug }) => {
+  const params = products.docs.map(({ slug }) => {
     return { slug }
   })
 
@@ -43,13 +42,13 @@ type Args = {
   }>
 }
 
-export default async function Service({ params: paramsPromise }: Args) {
+export default async function Post({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
-  const url = '/skill-sets/' + slug
-  const skillSets = await queryPostBySlug({ slug })
+  const url = '/products/' + slug
+  const product = await queryProductBySlug({ slug })
 
-  if (!skillSets) return <PayloadRedirects url={url} />
+  if (!product) return <PayloadRedirects url={url} />
 
   return (
     <article className="pt-2 pb-16">
@@ -59,31 +58,20 @@ export default async function Service({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
 
       <div className="container mb-6">
-        <Breadcrumbs
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'Skill Sets', href: '/skill-sets' },
-            { label: skillSets.title }, // No link for current page
-          ]}
-        />
+        <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: product.title }]} />
       </div>
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={skillSets} />
+      <PostHero post={product} />
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
-          <RichText
-            className="max-w-[48rem] mx-auto"
-            data={skillSets.content}
-            enableGutter={false}
-          />
-          {skillSets?.['related-skill-sets'] && skillSets?.['related-skill-sets'].length > 0 && (
-            <RelatedSkillSets
+          <RichText className="max-w-[48rem] mx-auto" data={product.content} enableGutter={false} />
+          {product.relatedPosts && product.relatedPosts.length > 0 && (
+            <RelatedPosts
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={skillSets?.['related-skill-sets'].filter((skill) => typeof skill === 'object')}
-              introContent={relatedArticlesContent}
+              docs={product.relatedPosts.filter((product) => typeof product === 'object')}
             />
           )}
         </div>
@@ -94,23 +82,22 @@ export default async function Service({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
-  const skillSets = await queryPostBySlug({ slug })
+  const product = await queryProductBySlug({ slug })
 
-  return generateMeta({ doc: skillSets })
+  return generateMeta({ doc: product })
 }
 
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'skill-sets',
+    collection: 'products',
     draft,
     limit: 1,
     overrideAccess: draft,
     pagination: false,
-    depth: 2,
     where: {
       slug: {
         equals: slug,
