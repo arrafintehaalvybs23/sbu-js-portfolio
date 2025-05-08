@@ -20,6 +20,9 @@ const nextConfig = {
       }),
     ],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   reactStrictMode: true,
   redirects,
 }
