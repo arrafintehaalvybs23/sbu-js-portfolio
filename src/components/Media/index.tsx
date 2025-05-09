@@ -19,7 +19,11 @@ export const Media: React.FC<Props> = (props) => {
           }
         : {})}
     >
-      {isVideo ? <VideoMedia {...props} /> : <ImageMedia {...props} />}
+      {isVideo && resource?.isExternal && resource?.externalURL ? (
+        <VideoMedia {...props} />
+      ) : (
+        <ImageMedia {...props} />
+      )}
     </Tag>
   )
 }

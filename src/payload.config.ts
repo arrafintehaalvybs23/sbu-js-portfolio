@@ -30,6 +30,14 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      titleSuffix: ' | SBU JS Admin',
+      title: 'SBU JS Admin',
+      description: 'SBU JS Admin Panel',
+      favicon: '/api/media/file/SBU-JS.png',
+      // The `logo` prop can be a string or a React component.
+      logo: '/api/media/file/SBU-JS.png',
+    },
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.

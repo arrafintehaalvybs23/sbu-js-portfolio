@@ -58,6 +58,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Products`,
+    title: `SBU JS Portfolio Products`,
   }
 }
