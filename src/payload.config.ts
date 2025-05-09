@@ -23,6 +23,7 @@ import { Portfolio } from './collections/Portfolio'
 import { Insights } from './collections/Insights'
 import HeroSlider from './globals/hero-slider'
 import { Products } from './collections/Products'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -67,7 +68,7 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: process.env.DATABASE_URI || process.env.MONGODB_URI || '',
   }),
   collections: [
     Pages,
@@ -91,6 +92,13 @@ export default buildConfig({
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: true,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      collections: {
+        media: {}, // ✅ must be object
+      },
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
